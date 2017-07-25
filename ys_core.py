@@ -13,7 +13,7 @@ from ys import ys
 
 class yellowSpider:
 
-    SCRIPT_VERSION = 1.2
+    SCRIPT_VERSION = 1.22
     SCRIPT_NAME = u'pYellowSpider'
 
     def __init__(self, args):
@@ -29,9 +29,8 @@ class yellowSpider:
 
     def chooseMenu()
         print('=== Starting {0} V{1} ==='.format(colored.yellow(SCRIPT_NAME), colored.yellow(SCRIPT_VERSION)))
-
         print('{0} : abord script'.format(colored.cyan('(0)'))
-        print colored.cyan('(1)') + ' 	: Crawl a specific website'
+        print colored.cyan('(1)') + ' 	: Crawl a specific websiteaaa'
         print colored.cyan('(2)') + ' 	: launch YellowSpider'
 
         mode = raw_input()
