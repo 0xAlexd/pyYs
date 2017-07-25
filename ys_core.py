@@ -13,7 +13,7 @@ from ys import ys
 
 class yellowSpider:
 
-    SCRIPT_VERSION = 1.22
+    SCRIPT_VERSION = 1.223
     SCRIPT_NAME = u'pYellowSpider'
 
     def __init__(self, args):
