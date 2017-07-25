@@ -26,4 +26,4 @@ try:
 
     print 'ok'
 except:
-    print 't'
+    print 'tamere'
