@@ -9,6 +9,7 @@ import os
 import os.path
 import re
 import time
+from ys_db_manager import YsDatabase
 # from ys_parser import YsParser
 
 
@@ -21,11 +22,6 @@ class YellowSpider:
 
     def __init__(self):
         pass
-
-    def save_logs(string):
-        f = open('logs.txt', 'a')
-        f.write(string)
-        f.close()
 
     def choose_menu(self):
         mode = False
@@ -69,8 +65,12 @@ class YellowSpider:
         print(u'{0} : Launch YellowSpider'.format(colored.cyan('(3)')))
         print(u'{0} : Exit'.format(colored.cyan('(4)')))
 
+    @staticmethod
+    def save_logs(string):
+        f = open('logs.txt', 'a')
+        f.write(string)
+        f.close()
 
 if __name__ == '__main__':
-    os.clear()
     ys = YellowSpider()
     ys.start()
