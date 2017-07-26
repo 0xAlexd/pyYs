@@ -1,4 +1,4 @@
-from ys import ys
+from ys_parser import ys
 
 test = ys('https://www.google.fr')
 #print test.data
