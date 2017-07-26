@@ -14,14 +14,11 @@ from ys_parser import ys
 
 class YellowSpider:
 
-    SCRIPT_VERSION = 0.1
+    SCRIPT_VERSION = 0.2
     SCRIPT_NAME = u'pYellowSpider'
 
-    def __init__(self, args):
-        if args[0] == 1:
-            self.crawlSpecificWebsite(args[1])
-        elif args[0] == 2:
-            self.spiderStart()
+    def __init__(self):
+        pass
 
     def save_logs(string):
         f = open('logs.txt', 'a')
