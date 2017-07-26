@@ -2,7 +2,7 @@
 
 import requests
 from requests.packages.urllib3.exceptions import InsecureRequestWarning
-from urllib2 import urlopen
+import urlopen
 import bs4 as BeautifulSoup
 import re
 
