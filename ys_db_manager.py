@@ -2,7 +2,7 @@
 # !/usr/bin/python3
 
 
-class YsDatabaseManager:
+class YsDatabase:
 
     def __init__(self):
         print('init')
@@ -44,3 +44,46 @@ class YsDatabaseManager:
     #             statement = statement + line
     #             cursor.execute(statement)
     #             statement = ""
+
+        while con_flag == False:
+    try:
+        con = pymysql.connect(bd_host, bd_user, bd_pass)
+        cur = con.cursor()
+        print colored.green('[OK]		') + 'Database @'+bd_host+' successfully connected.'
+        con_flag = True
+    except:
+        print colored.red('[ERROR] ') + 'Failed to connect database. (MySQL database required to launch YS.)'
+        bd_host = raw_input(colored.cyan('\rDatabase host :'))
+        bd_user = raw_input(colored.cyan('\rDatabase user :'))
+        db_pass = raw_input(colored.cyan('\rDatabase pass :'))
+
+    print 'Checking Database structure...'
+    DbExistQuery = ("SELECT SCHEMA_NAME FROM INFORMATION_SCHEMA.SCHEMATA WHERE SCHEMA_NAME = 'pys'")
+    DbExist = cur.execute(DbExistQuery)
+
+    while not DbExist:
+        print colored.red('[ERROR]		') + 'Database pys does not exist @'+bd_host+' for user ' + bd_user
+        if os.path.isfile('pyYellowSpider.sql'):
+            print colored.green('[OK] ') + 'pyYellowSpider.sql found. Creating database structure...'
+            try:
+                DbCreateQuery = ("CREATE DATABASE pys")
+                cur.execute(DbCreateQuery)
+                cur.close()
+                con.close()
+                con = pymysql.connect(bd_host, bd_user, bd_pass, 'pys')
+                cur = con.cursor()
+                exec_sql_file(cur, 'pyYellowSpider.sql')
+                cur.execute("INSERT INTO ys2websites VALUES(1,'http://www.lemonde.fr', '', '', '', '', 0, 0, 000000000)");
+                con.commit()
+                DbExist = True
+                print colored.green('[OK]		') +  'Database struture created !'
+                cur.close()
+                con.close()
+            except:
+                print colored.red('[ERROR]		') + 'Error creating Database Structure ! Press any key to retry.'
+                cur.execute(("DROP DATABASE pys"))
+                DbExist = False
+                raw_input()
+        else:
+            print colored.red('[ERROR]		') + 'pyYellowSpider.sql NOT FOUND!'
+            DbExist = False
