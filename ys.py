@@ -1,22 +1,15 @@
 # coding: utf-8
 # !/usr/bin/python3
-
-# from ys_routine import YsRoutine
-from clint.textui import colored
-import pymysql
 import sys
 import os
 import os.path
 import re
 import time
-from ys_db_manager import YsDatabase
-# from ys_parser import YsParser
+from ys_db_manager import *
+from config import SCRIPT, DATABASE
 
 
 class YellowSpider:
-
-    SCRIPT_VERSION = u'0.2'
-    SCRIPT_NAME = u'pYellowSpider'
 
     DATABASE = None
 
@@ -26,8 +19,8 @@ class YellowSpider:
     def choose_menu(self):
         mode = False
         while not mode:
-            self.menu_display(self.SCRIPT_NAME, self.SCRIPT_VERSION)
-            mode = input()
+            self.menu_display()
+            mode = str(raw_input())
             if mode.isdigit():
                 if 1 <= int(mode) <= 4:
                     return int(mode)
@@ -40,30 +33,38 @@ class YellowSpider:
         return mode
 
     def set_database(self):
-        database = YsDatabase()
+        db = YsDatabaseMysql()
         connected = False
         while not connected:
-            connected = database.mysql_connect()
-            self.DATABASE = database
+            self.database_settings()
+            connected = db.connect(DATABASE.MYSQL_HOST, DATABASE.MYSQL_USER, DATABASE.MYSQL_PASS)
+            self.DATABASE = db
         return connected
 
+    @staticmethod
+    def database_settings():
+        host = raw_input('Set database host : ')
+        user = raw_input('Set database user : ')
+        pasw = raw_input('Set database password : ')
+
+        DATABASE.MYSQL_HOST = host
+        DATABASE.MYSQL_USER = user
+        DATABASE.MYSQL_PASS = pasw
+
     def start(self):
-        try:
-            if not self.choose_menu():
-                raise Exception('Error menu')
-            if not self.set_database():
-                raise Exception('Error database')
-        except Exception as e:
-            print(e)
+        if not self.choose_menu():
+            raise Exception('Error menu')
+        if not self.set_database():
+            raise Exception('Error database')
 
     # UI display
     @staticmethod
-    def menu_display(script_name, script_version):
-        print(u'=== Starting {0} V{1} ==='.format(colored.yellow(script_name), colored.yellow(script_version)))
-        print(u'{0} : Abord script'.format(colored.cyan('(1)')))
-        print(u'{0} : Specific website'.format(colored.cyan('(2)')))
-        print(u'{0} : Launch YellowSpider'.format(colored.cyan('(3)')))
-        print(u'{0} : Exit'.format(colored.cyan('(4)')))
+    def menu_display():
+        print(u'=== Starting {0} V{1} ==='.format(SCRIPT.VERSION, SCRIPT.NAME))
+        print(u'(1) Abord script')
+        print(u'(2) : Specific website')
+        print(u'(3) : Launch YellowSpider')
+        print(u'(4) : Exit')
 
     @staticmethod
     def save_logs(string):
